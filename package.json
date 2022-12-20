@@ -1,0 +1,25 @@
+{
+  "name": "juno",
+  "version": "0.2.0",
+  "description": "DBO Database Server",
+  "productName": "DBO Database Server",
+  "author": "y.ivanchenko <jurgenet@gmail.com>",
+  "private": true,
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js",
+    "dump": "node db-dump.js",
+    "restore": "node db-restore.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.1",
+    "dotenv": "^16.0.2",
+    "express": "^4.17.2",
+    "mongoose": "^6.1.8"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "license": "ISC"
+}
