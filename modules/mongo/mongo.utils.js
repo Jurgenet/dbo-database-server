@@ -1,30 +1,27 @@
 const exec  = require('child_process').exec
-const path = require("path")
+const path = require('path')
 const mongoose = require('mongoose')
-require('dotenv').config()
+const {
+  serverName,
+  dbLocalConnectionUrl,
+  dbAtlasConnectionUrl,
+  dbToolsConnectionUrl,
+  dbBackupFolder,
+} = require('../../config')
 
 const mongoOptions = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }
 
-function connectToDatabase ({ isLocalDatabase = true } = {}) {
-  const mongoUri = isLocalDatabase ? process.env.MONGODB_URI_SERVER : process.env.MONGODB_URI_ATLAS
+function createDbConnection ({ isLocalDatabase = true } = {}) {
+  const dbConnectionUri = isLocalDatabase ? dbLocalConnectionUrl : dbAtlasConnectionUrl
 
-  mongoose
-    .connect(mongoUri, mongoOptions)
-    .then(() => {
-      console.log('Connected to database!')
-    })
-    .catch((error) => {
-      if (error.name === 'MongooseServerSelectionError') {
-        console.log(`${error.name} :: ${error.message}`)
-        console.log('Run mongodb server process!')
-      } else {
-        console.log('Connection failed!')
-        console.log(error)
-      }
-    })
+  console.log('Db connection url:', dbConnectionUri)
+
+  mongoose.connect(dbConnectionUri, mongoOptions)
+
+  return mongoose.connection
 }
 
 function generateDocId () {
@@ -35,10 +32,9 @@ function createDump ({ stump = _createStump(), databaseName = 'test' } = {}) {
   return new Promise((resolve, reject) => {
     const tool = path.join(__dirname, 'mongodump.exe')
     const database = `-d ${databaseName}`
-    const uri = process.env.MONGODB_TOOLS_CONNECTION
-    const dump = path.join(process.env.MONGODB_BACKUP_FOLDER, process.env.SERVER_NAME, stump)
+    const dump = path.join(dbBackupFolder, serverName, stump)
 
-    const child = exec(`${tool} ${database} -o ${dump} ${uri}`)
+    const child = exec(`${tool} ${database} -o ${dump} ${dbToolsConnectionUrl}`)
 
     if (child.stdout) {
       child.stdout.pipe(process.stdout)
@@ -74,7 +70,7 @@ function _createStump () {
 }
 
 module.exports = {
-  connectToDatabase,
+  createDbConnection,
   generateDocId,
   createDump,
 }

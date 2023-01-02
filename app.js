@@ -1,10 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const { connectToDatabase } = require('./modules/mongo/mongo.utils')
 
 const app = express()
-
-connectToDatabase()
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))

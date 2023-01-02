@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  database:
+    image: mongo:latest
+  database_api:
+    build: .
+    command: npm run start
+    restart: unless-stopped
+    ports:
+      - '3333:3333'
+    environment:
+      - PORT=3333
+      - HOST=http://example.com
+      - SERVER_NAME=myServerName
+      - MONGODB_URI_SERVER=mongodb://database:27017/main
+      - MONGODB_URI_ATLAS=mongodb+srv://mongoUser:mongoUserPassword@cluster/main?retryWrites=true&w=majority
+      - MONGODB_TOOLS_CONNECTION=-u user -p password --authenticationDatabase admin
+      - MONGODB_BACKUP_FOLDER=Z:\\_backups
+    depends_on:
+      - database

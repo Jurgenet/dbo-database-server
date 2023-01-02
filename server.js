@@ -1,41 +1,45 @@
 const { debug } = require('console')
 const http = require('http')
 const app = require('./app')
+const { createDbConnection } = require('./modules/mongo/mongo.utils')
+const { port } = require('./config')
 
-require('dotenv').config()
+app.set('port', port)
 
-const PORT = process.env.PORT || '3000'
+createDbConnection()
+  .on('error', console.error.bind(console, 'connection error:'))
+  .on('disconnected', createDbConnection)
+  .once('open', () => {
+    console.log('Connected to database successfully')
+    startServer()
+  })
 
-app.set('port', PORT)
+function startServer () {
+  const server = http.createServer(app)
 
-const server = http.createServer(app)
-
-server.on('error', onError)
-server.on('listening', onListening)
-
-server.listen(PORT)
-
-function onError (error) {
-  if (error.syscall !== 'listen') {
-    throw error
-  }
-
-  const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${PORT}`
-
-  switch (error.code) {
-    case 'EACCESS':
-      console.error(`${bind} requires elevated privilages`)
-      process.exit(1)
-    case 'EADDRINUSE':
-      console.error(`${bind} is already in use`)
-      process.exit(1)
-    default:
+  server.on('error', () => {
+    if (error.syscall !== 'listen') {
       throw error
-  }
-}
+    }
 
-function onListening () {
-  const addr = server.address()
-  const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${PORT}`
-  debug(`Listening on ${bind}`)
+    const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${port}`
+
+    switch (error.code) {
+      case 'EACCESS':
+        console.error(`${bind} requires elevated privilages`)
+        process.exit(1)
+      case 'EADDRINUSE':
+        console.error(`${bind} is already in use`)
+        process.exit(1)
+      default:
+        throw error
+    }
+  })
+  server.on('listening', () => {
+    const addr = server.address()
+    const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${port}`
+    debug(`Started db service on ${bind}`)
+  })
+
+  server.listen(port)
 }

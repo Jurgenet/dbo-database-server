@@ -1,14 +1,12 @@
 const exec  = require('child_process').exec
-const path = require("path")
+const path = require('path')
+const { dbToolsConnectionUrl, dbDumpPath } = require('./config')
 
-require('dotenv').config()
-
-function restoreDump (pathToDump = process.env.DUMP, databaseName = 'test') {
+function restoreDump (pathToDump = dbDumpPath, databaseName = 'test') {
   const tool = path.join(__dirname, 'modules', 'mongo', 'mongorestore.exe')
   const database = `-d ${databaseName}`
-  const uri = process.env.MONGODB_TOOLS_CONNECTION
 
-  const child = exec(`${tool} ${database} ${uri} --drop ${pathToDump}`)
+  const child = exec(`${tool} ${database} ${dbToolsConnectionUrl} --drop ${pathToDump}`)
 
   if (child.stdout) {
     child.stdout.pipe(process.stdout)
