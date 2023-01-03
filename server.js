@@ -1,8 +1,8 @@
 const { debug } = require('console')
 const http = require('http')
-const app = require('./app')
-const { createDbConnection } = require('./modules/mongo/mongo.utils')
-const { port } = require('./config')
+const app = require('./src/app')
+const { createDbConnection } = require('./src/modules/mongo/mongo.utils')
+const { port } = require('./src/config')
 
 app.set('port', port)
 

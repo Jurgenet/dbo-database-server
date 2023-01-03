@@ -1,6 +1,6 @@
 {
   "name": "juno",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "DBO Database Server",
   "productName": "DBO Database Server",
   "author": "y.ivanchenko <jurgenet@gmail.com>",
@@ -9,8 +9,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
+    "dev": "nodemon",
     "dump": "node db-dump.js",
-    "restore": "node db-restore.js"
+    "restore": "node db-restore.js",
+    "docker-dev-up": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build",
+    "docker-up": "docker-compose up --build"
   },
   "dependencies": {
     "body-parser": "^1.19.1",

@@ -1,8 +1,12 @@
 version: '3'
 
 services:
+
   database:
     image: mongo:latest
+    volumes:
+       - mongodb_data:/data/db
+
   database_api:
     build: .
     command: npm run start
@@ -19,3 +23,6 @@ services:
       - MONGODB_BACKUP_FOLDER=Z:\\_backups
     depends_on:
       - database
+
+volumes:
+  mongodb_data:
