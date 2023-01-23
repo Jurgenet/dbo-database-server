@@ -4,8 +4,8 @@
   "description": "DBO Database Server",
   "productName": "DBO Database Server",
   "author": "y.ivanchenko <jurgenet@gmail.com>",
-  "private": true,
   "main": "server.js",
+  "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",

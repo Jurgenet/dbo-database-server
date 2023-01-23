@@ -1,11 +1,21 @@
 # dbo-database-server (Juno)
 
-> Mongodb/Node/Express
+> Mongodb, Node, Express
 
 ##### setup
 
 ```
-cp docker-compose.example.yml docker-compose.yml
+cp .env.example .env
+```
+
+##### run server
+
+```sh
+# dev docker container up
+yarn docker-dev-up
+# or
+yarn docker-up
+# prod docker container up
 ```
 
 ##### run server
