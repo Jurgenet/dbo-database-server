@@ -3,8 +3,7 @@ const path = require('path')
 const mongoose = require('mongoose')
 const {
   serverName,
-  dbLocalConnectionUrl,
-  dbAtlasConnectionUrl,
+  dbConnectionUrl,
   dbToolsConnectionUrl,
   dbBackupFolder,
 } = require('../../config')
@@ -15,11 +14,9 @@ const mongoOptions = {
 }
 
 function createDbConnection ({ isLocalDatabase = true } = {}) {
-  const dbConnectionUri = isLocalDatabase ? dbLocalConnectionUrl : dbAtlasConnectionUrl
+  console.log('Db connection url:', dbConnectionUrl)
 
-  console.log('Db connection url:', dbConnectionUri)
-
-  mongoose.connect(dbConnectionUri, mongoOptions)
+  mongoose.connect(dbConnectionUrl, mongoOptions)
 
   return mongoose.connection
 }
