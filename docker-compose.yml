@@ -1,0 +1,27 @@
+version: '3'
+
+volumes:
+  mongodb_data:
+
+services:
+
+  mongo:
+    image: mongo:6.0.3
+    volumes:
+       - mongodb_data:/data/db
+
+  restapi:
+    build: .
+    command: npm run start
+    restart: unless-stopped
+    ports:
+      - '3001:3001'
+    environment:
+      - PORT=3001
+      - SERVER_NAME=${SERVER_NAME}
+      - MONGODB_CONNECTION=${MONGODB_CONNECTION}
+      - MONGODB_TOOLS_CONNECTION=${MONGODB_TOOLS_CONNECTION}
+      - MONGODB_BACKUP_FOLDER=${MONGODB_BACKUP_FOLDER}
+    depends_on:
+      - mongo
+
