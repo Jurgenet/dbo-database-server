@@ -1,4 +1,4 @@
-module.exports.port = process.env.PORT || '3000'
+module.exports.port = process.env.PORT
 module.exports.serverName = process.env.SERVER_NAME
 module.exports.dbLocalConnectionUrl = process.env.MONGODB_URI_SERVER
 module.exports.dbAtlasConnectionUrl = process.env.MONGODB_URI_ATLAS
